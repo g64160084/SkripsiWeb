@@ -34,12 +34,24 @@
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
-          <h1>Clipping AOI</h1>
-          <h3>Silahkan Masukan File Yang Ingin Di Clip</h3>
-          <form method=post enctype=multipart/form-data action="/upload">
-            <input type=file name=file>
-            <input type=submit value=Upload>
-          </form>
+          <h1>Cloud Removal</h1>
+          <h3>Silahkan Masukan Band 4,5,BQA Yang Telah Di Clip Sebelumnya</h3>
+          <div class="tab"><br><br></div>
+
+            <table style="width:100%;backgroud-color:#000000">
+              <tr>
+                <form method=post enctype=multipart/form-data action="/upload1">
+                  <th>BAND4</th>
+                  <th><input type=file name=files[] multiple=""></th>
+              </tr>
+              <tr>
+                <th><input type=submit value=Upload></th>
+              </tr>
+              </form>
+            </table>
+            <div class="tab"><br><br></div>
+
+
         </div>
       </div>
     </div>

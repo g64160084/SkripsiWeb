@@ -9,7 +9,7 @@ def clipweb(input):
         return [json.loads(gdf.to_json())['features'][0]['geometry']]
 
     clipupload = r"C:\Users\DELL\Documents\SKRIPSI\PYCHARM\Code\flasks\clipupload"
-    cutline = gpd.read_file(r"D:\Feterachman\DATA SKRIPSI\26-2-2020\raw\KebunBaru.gpkg")
+    cutline = gpd.read_file(r"C:\Users\DELL\Documents\SKRIPSI\PYCHARM\kebunku.gpkg")
     data = rasterio.open(input)
     nama = os.path.basename(input)[:-4]
     geo = cutline.to_crs(crs=data.crs.data)
