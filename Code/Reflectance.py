@@ -3,11 +3,12 @@ import numpy as np
 import glob
 from rasterio.plot import show
 
-path = r"C:\Users\DELL\Documents\SKRIPSI\PYCHARM\26-2-2020\output\filledcompound"
-listRaster4 = glob.glob(path + "/*B4_Comp_Clipped_Filled.tif")
-listRaster5 = glob.glob(path + "/*B5_Comp_Clipped_Filled.tif")
-listRasterMTL = glob.glob(path + "/*MTL.txt")
-output = r"C:\Users\DELL\Documents\SKRIPSI\PYCHARM\26-2-2020\output\reflectance"
+path = r"C:\Users\DELL\Documents\SKRIPSI\PYCHARM\Code\Data\filling"
+path2 =r"C:\Users\DELL\Documents\SKRIPSI\PYCHARM\Code\Data"
+listRaster4 = glob.glob(path + "/*B4_Clipped_Comp_Filled.tif")
+listRaster5 = glob.glob(path + "/*B5_Clipped_Comp_Filled.tif")
+listRasterMTL = glob.glob(path2 + "/*MTL.txt")
+output = r"C:\Users\DELL\Documents\SKRIPSI\PYCHARM\Code\Data\reflectance"
 
 for x in range(len(listRasterMTL)):
     mtl = open(listRasterMTL[x], 'r',encoding="utf-8")
@@ -27,8 +28,11 @@ for x in range(len(listRasterMTL)):
     RAB_5 = float(REFLECTANCE_Add_BAND_5[0])
     b4 = rasterio.open(listRaster4[x])
     Band4 = b4.read(1).astype('float64')
+    b4prof = b4.profile
+    b4.close()
     b5 = rasterio.open(listRaster5[x])
     Band5 = b5.read(1).astype('float64')
+    b4.close()
     REFLECTANCE_BAND4 = np.where(
         Band4!=0,((Band4*RMB_4)+RAB_4),0
     )
@@ -39,15 +43,16 @@ for x in range(len(listRasterMTL)):
     NDVI = np.where(
         (REFLECTANCE_BAND5==0)|(REFLECTANCE_BAND4==0),0,(REFLECTANCE_BAND5-REFLECTANCE_BAND4)/(REFLECTANCE_BAND5+REFLECTANCE_BAND4)
     )
-    show(NDVI)
-
     with rasterio.Env():
-        profile = b4.profile
+        profile = b4prof
         profile.update(
             dtype=rasterio.float64,
             count=1,
             compress='lzw')
 
-        with rasterio.open(output + "/" + listRaster5[x].split("\\")[-1][:-26]+"_NDVI" + ".tif", 'w',
+        with rasterio.open(output + "/" + listRaster5[x].split("\\")[-1][:-26]+"NDVI" + ".tif", 'w',
                            **profile) as dst:
             dst.write(NDVI.astype(rasterio.float64), 1)
+            dst.close()
+
+    print("Success",x)
